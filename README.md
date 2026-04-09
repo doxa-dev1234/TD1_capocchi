@@ -1,3 +1,10 @@
+Intention et UX
+Intention claire : Détourner le stress du jeu d'arcade Flappy Bird en l'appliquant à l'univers cubique de Minecraft. La rigidité des formes primitives de p5.js (rect()) sert parfaitement la direction artistique.
+
+Règle simple & Interaction : L'utilisateur n'a qu'une seule interaction (cliquer/espace) pour déclencher une force vers le haut. La règle est de survivre en ne touchant pas les blocs.
+
+Feedback visuel : Le score s'incrémente en temps réel. Le personnage s'incline dynamiquement en fonction de sa vitesse de chute. Des écrans de démarrage et de Game Over cadrent l'expérience.
+
 Architecture et Machine à États
 Plutôt que de lancer le jeu immédiatement, le code utilise une machine à états via la variable etatJeu. Elle agit comme un aiguilleur dans la fonction draw(). À tout moment, le jeu sait s'il doit afficher l'écran d'accueil (START), faire tourner la logique du jeu (PLAYING), ou afficher l'écran de défaite (GAMEOVER). L'interaction de saut (interactionSaut()) s'adapte intelligemment à cet état (jouer ou recommencer).
 
