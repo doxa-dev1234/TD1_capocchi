@@ -1,32 +1,19 @@
-Intention et UX
-Intention claire : Détourner le stress du jeu d'arcade Flappy Bird en l'appliquant à l'univers cubique de Minecraft. La rigidité des formes primitives de p5.js (rect()) sert parfaitement la direction artistique.
+1. Initialisation et Canvas
+i. Prompt utilisé "Voici mes spécifications. Ne génère pas le code final. Aide-moi à coder étape par étape en m'expliquant chaque fonction p5.js dont j'ai besoin. Commence par la section Canvas."
+ii. Partie concernée : Création du fichier de base, structure `setup()` et `draw()`.
+iii. Modifications apportées :J'ai étudié les explications de l'IA sur la boucle de rendu de p5.js. J'ai ensuite personnalisé moi-même les paramètres, en choisissant `windowWidth` et `windowHeight` pour un affichage plein écran, et j'ai défini le code couleur hexadécimal du ciel de Minecraft ("#87CEEB") pour le `background()`.
 
-Règle simple & Interaction : L'utilisateur n'a qu'une seule interaction (cliquer/espace) pour déclencher une force vers le haut. La règle est de survivre en ne touchant pas les blocs.
+2. Physique du personnage (La Gravité)
+i. Prompt utilisé :"Comment gérer la gravité du personnage pour qu'il ait une vitesse initiale vers le bas et qu'il puisse sauter ?"*
+ii. Partie concernée :** La classe `Steve`, l'application des vecteurs (`p5.Vector`) et les lois du mouvement.
+iii. Modifications apportées :** L'IA m'a expliqué l'addition de vecteurs (position += vélocité += gravité). Après avoir testé le code de l'IA, j'ai trouvé le saut trop long. J'ai donc modifié la constante de gravité (passée à `0.6`) et la force de l'impulsion (passée à `-10`).
 
-Feedback visuel : Le score s'incrémente en temps réel. Le personnage s'incline dynamiquement en fonction de sa vitesse de chute. Des écrans de démarrage et de Game Over cadrent l'expérience.
+3. Les Obstacles et le Défilement
+i. Prompt utilisé : "Maintenant, fais que les obstacles se déplacent vers la gauche et soient générés au hasard avec un trou au milieu pour que le personnage puisse passer."*
+ii. Partie concernée : La classe `BedrockPipe`, la gestion du tableau d'obstacles et l'aléatoire.
+iii. Modifications apportées : L'IA m'a fourni la logique mathématique pour calculer le "top" et le "bottom" du tuyau. J'ai ensuite repris ce code pour y intégrer ma propre direction artistique : j'ai codé les nuances de gris et la boucle `for` générant la fausse texture de Bedrock. J'ai également ajusté la vitesse de défilement (`speed = 5`) et la taille de l'ouverture (`gap = 200`) pour équilibrer la difficulté du jeu.
 
-Architecture et Machine à États
-Plutôt que de lancer le jeu immédiatement, le code utilise une machine à états via la variable etatJeu. Elle agit comme un aiguilleur dans la fonction draw(). À tout moment, le jeu sait s'il doit afficher l'écran d'accueil (START), faire tourner la logique du jeu (PLAYING), ou afficher l'écran de défaite (GAMEOVER). L'interaction de saut (interactionSaut()) s'adapte intelligemment à cet état (jouer ou recommencer).
-
- Maîtrise de p5.js (Physique et Vecteurs)
-Comme abordé dans le cours, la classe Steve utilise les mathématiques vectorielles pour gérer la physique :
-
-Les Vecteurs (p5.Vector) : Au lieu de gérer x et y séparément, nous utilisons des vecteurs pour la position (pos), la vitesse (vel), la gravité constante (gravity), et la force de saut (lift).
-
-La Physique (update) : À chaque frame, la vitesse augmente en absorbant la gravité (this.vel.add(this.gravity)). La position change en fonction de cette vitesse (this.pos.add(this.vel)). Quand on saute, on écrase la vitesse Y avec une force négative pour une impulsion nette.
-
-Transformations : Dans la méthode show(), push() et pop() isolent les transformations. L'astuce visuelle : let angle = map(this.vel.y, -10, 10, -PI/6, PI/6); rotate(angle);. La fonction map() convertit la vitesse de chute en un angle.
-
-Collisions et Optimisations (Classe BedrockPipe)
-Les Collisions Mathématiques (AABB) : Le cours abordait les collisions circulaires par calcul de distance. Ici, nous utilisons la méthode "Axis-Aligned Bounding Box" (AABB). La fonction hits() calcule les bords stricts de Steve. Si le bord droit de Steve dépasse le bord gauche du tuyau, et qu'il n'est pas parfaitement situé dans la zone vide (top et bottom), la collision est avérée (return true).
-
-L'Aléatoire Optimisé : Pour générer la texture de roche sans qu'elle ne clignote à 60 FPS dans le draw(), les coordonnées des taches sont générées avec random() une seule fois dans le constructor() et stockées dans des tableaux (tachesHaut, tachesBas). Le show() se contente de les dessiner.
-
-Journal d'usage de l'IA
-Durant la conception, l'IA a été utilisée comme assistant technique :
-
-Idéation & Mathématiques : Traduction de l'idée de chute et de saut en utilisant la notion de p5.Vector abordée en cours, et adaptation de la formule de collision des cercles en collision rectangulaire (AABB).
-
-Débogage (Graine aléatoire) : Suite à un problème où les ouvertures des tuyaux n'étaient pas aléatoires, l'IA a pointé du doigt l'utilisation problématique de randomSeed() dans le draw(). La solution apportée a été de pré-calculer les textures dans le constructor().
-
-Architecture (Critique) : L'IA a conseillé et aidé à mettre en place une "Machine à états" pour structurer proprement les écrans de menu, de jeu et de défaite, rendant l'expérience utilisateur (UX) beaucoup plus fluide.
+4. Collisions et Système de Score
+i. Prompt utilisé :"Aide-moi pour la gestion de toutes les collisions entre le personnage et les obstacles, ainsi que l'avancée du score quand on les dépasse."*
+ii. Partie concernée : La méthode `hits()` utilisant l'algorithme AABB (Axis-Aligned Bounding Box) et le nettoyage des tableaux (`splice`).
+iii. Modifications apportées : J'ai décortiqué les conditions `if` fournies par l'IA vérifiant les chevauchements de coordonnées (X et Y). Pour rendre le jeu moins punitif et plus juste, j'ai ajusté manuellement les dimensions de la zone de collision (la "hitbox" `this.w` et `this.h` de Steve) pour qu'elle soit plus petite que le dessin réel (comme dans la majorité des jeux).
