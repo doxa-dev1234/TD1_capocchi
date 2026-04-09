@@ -8,13 +8,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
   
   <style>
-   
+    /* Ce petit bout de CSS permet d'enlever les marges blanches autour du jeu 
+       et d'empêcher l'apparition de barres de défilement (scrollbars) */
     html, body {
- 
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
       background-color: #000; /* Fond noir derrière le jeu si besoin */
     }
     
- 
+    /* Permet de centrer le canvas p5.js proprement au milieu de l'écran */
     canvas {
       display: block;
     }
